@@ -14,8 +14,24 @@ jobs:
       - name: Unzip
         run: |
           unzip DocScannerPro.zip -d extracted/
-          rm -f extracted/.env
           rm DocScannerPro.zip
+
+      - name: Remove build cache, IDE files, and secrets
+        run: |
+          rm -rf extracted/.gradle
+          rm -rf extracted/build
+          rm -rf extracted/.acside
+          rm -f extracted/.env
+          rm -f extracted/.env.example
+
+      - name: Add .gitignore
+        run: |
+          cat >> extracted/.gitignore << 'EOF'
+          .gradle/
+          build/
+          .acside/
+          .env
+          EOF
 
       - name: Commit extracted files
         run: |
